@@ -53,7 +53,10 @@ def set_servo_angle(channel, angle):  # 输入角度转换成12^精度的数值
     pwm.set_pwm(channel, 0, date)
 
 image_classification = pipeline(Tasks.image_classification, model='damo/cv_convnext-base_image-classification_garbage')
- 
+set_servo_angle(0, 0)
+set_servo_angle(1, 0)
+set_servo_angle(2, 0)
+set_servo_angle(3, 0)
 while(1):
         ret,frame = cap.read()
         dst = img_p(frame)
@@ -70,14 +73,18 @@ while(1):
                 print(results)
                 result = results['label'][0].split('-')[0]
                 if (result=='有害垃圾'):
-                    # 通道和角度
                     set_servo_angle(0, 90)
-                if (result=='可回收垃圾'):
+                if (result=='可回收物'):
                     set_servo_angle(1, 90)
                 if (result=='厨余垃圾'):
                     set_servo_angle(2, 90)
                 if (result=='其他垃圾'):
                     set_servo_angle(3, 90)
+                time.sleep(1)
+                set_servo_angle(0, 0)
+                set_servo_angle(1, 0)
+                set_servo_angle(2, 0)
+                set_servo_angle(3, 0)
                 time.sleep(1)
 cap.release()
 cv2.destroyAllWindows()
